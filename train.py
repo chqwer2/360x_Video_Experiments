@@ -89,10 +89,6 @@ action_category = le.transform(action_names).reshape(-1, 1)
 enc = OneHotEncoder()
 enc.fit(action_category)
 
-# # example
-# y = ['HorseRace', 'YoYo', 'WalkingWithDog']
-# y_onehot = labels2onehot(enc, le, y)
-# y2 = onehot2labels(le, y_onehot)
 
 actions = []
 fnames = os.listdir(data_path)
