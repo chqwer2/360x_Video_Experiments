@@ -64,16 +64,19 @@ def main():
     test_number = 10
 
     # Video Input
-    home_address = "/bask/projects/j/jiaoj-3d-vision/360XProject/Data/*/*/*"
+    # home_address = "/bask/projects/j/jiaoj-3d-vision/360XProject/Data/*/*/*"
     # [Inside, Outside]/ [Type]/ [Video ID]/ [360 Video or 360]
-    video_root = os.path.join(home_address, "360*")    # [360 Video or 360]
+    # video_root = os.path.join(home_address, "360*")    # [360 Video or 360]
+    home_address = "/bask/projects/j/jiaoj-3d-vision/360XProject/Data"
 
+    video_root = "Outside/Street/*" # ID
+    video_root = os.path.join(home_address, video_root, '360*/*')
 
-
-    video_list = glob.glob(f'{video_root}/*')
+    video_list = glob.glob(video_root)
     video_list.sort()
     video_list = video_list[:test_number]
 
+    print("input video_list:", video_list)
     #  = video_root
     # os.makedirs(out_root, exist_ok=True)
     #
@@ -82,6 +85,8 @@ def main():
     for video in tqdm(video_list, desc=f'Video Processing ID = {str(args.split).zfill(2)}'):
         # out_root = video.rstrip(video.split("/")[-1]).rstrip("/")
         # print("Processing out_root:", out_root)
+        if "*" in video_list:
+            continue
 
         video_name = video.split('/')[-1]  # [:-4]
         processed_path = video.rstrip(video_name).rstrip('/')
