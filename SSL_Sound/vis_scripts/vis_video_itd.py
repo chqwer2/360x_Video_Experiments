@@ -192,7 +192,9 @@ def test(args, device):
         csv_file = csv.DictReader(open(pr.list_vis, 'r'), delimiter=',')
         for row in csv_file:
             print("previous row:", row)
-            if row.endswith("audio") or row.endswith("meta") or row.endswith("frames") or row.endswith("json"):
+            # if row.endswith("audio") or row.endswith("meta") or row.endswith("frames") or row.endswith("json"):
+            #     continue
+            if "mp4" not in row['path']:
                 continue
             print("row:", row)
 
