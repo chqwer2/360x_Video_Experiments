@@ -196,6 +196,9 @@ def test(args, device):
             #     continue
             if "mp4" not in row['path']:
                 continue
+            name = row['path'].split("/")
+            row['path'] = row['path'].rstrip("name")+f"meta/{name}_meta.json"
+
             print("row:", row)
 
             if not row in samples:
