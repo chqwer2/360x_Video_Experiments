@@ -93,7 +93,8 @@ def create_list_for_video(args, name, video_list):
         path = video  # os.path.join('./data/DemoVideo', video)
 
         video_name = path.split('/')[-1]
-        meta_path = os.path.join(video, "meta", video_name+'_meta.json')
+        meta_path = os.path.join(video.rstrip(video_name).rstrip("/"),
+                                 "meta", video_name+'_meta.json')
 
         try:
             with open(meta_path, "r") as f:
