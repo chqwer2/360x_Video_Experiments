@@ -95,25 +95,33 @@ def main():
 
         frame_path = os.path.join(processed_path, 'frames')
         audio_path = os.path.join(processed_path, 'audio')
-        meta_path = os.path.join(processed_path, 'meta.json')
+        meta_path = os.path.join(processed_path, 'meta')
 
-        os.makedirs(frame_path, exist_ok=True)
-        os.makedirs(audio_path, exist_ok=True)
 
-        if not os.path.exists(meta_path):
+
+        os.makedirs(meta_path, exist_ok=True)
+
+        # if not os.path.exists(meta_path):
+
+        if not os.path.exists(frame_path):
             print("Get Frames...")  # About 3mins for a 5mins 360 video
+            os.makedirs(frame_path, exist_ok=True)
             frame_info = get_frame(video, frame_path, args.frame_rate)
-            # audio
+
+        # audio
+        if not os.path.exists(audio_path):
             print("Get Audios...")
+            os.makedirs(audio_path, exist_ok=True)
             audio_info = get_audio(video, audio_path)
 
-            if audio_info is None:
-                tqdm.write(f'{processed_path} is broken')
-                shutil.rmtree(processed_path)
-                continue
+        if audio_info is None:
+            tqdm.write(f'{processed_path} is broken')
+            shutil.rmtree(processed_path)
+            continue
 
-            # meta data
-            get_meta(video, meta_path, frame_info, audio_info)
+        # meta data
+        get_meta(video, os.path.join(meta_path, "video_name"+"_meta.json"),
+                 frame_info, audio_info)
 
         tqdm.write(f'{video_name} is Finished!')
 
