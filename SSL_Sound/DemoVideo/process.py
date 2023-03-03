@@ -103,10 +103,10 @@ def main():
 
         # if not os.path.exists(meta_path):
 
-        if not os.path.exists(frame_path):
-            print("Get Frames...")  # About 3mins for a 5mins 360 video
-            os.makedirs(frame_path, exist_ok=True)
-            frame_info = get_frame(video, frame_path, args.frame_rate)
+        # if not os.path.exists(frame_path):
+        print("Get Frames...")  # About 3mins for a 5mins 360 video
+        os.makedirs(frame_path, exist_ok=True)
+        frame_info = get_frame(video, frame_path, args.frame_rate)
 
         # audio
         # if not os.path.exists(audio_path):
