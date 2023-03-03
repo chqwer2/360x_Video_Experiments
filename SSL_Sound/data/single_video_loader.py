@@ -57,7 +57,8 @@ class SingleVideoDataset(StereoAudioDataset):
         video_path = list_sample
         audio_path = os.path.join(video_path, 'audio', 'audio.wav')
         frame_path = os.path.join(video_path, 'frames')
-        meta_path = os.path.join(video_path, 'meta.json')
+        video_name = video_path.split("/")[-1]
+        meta_path = os.path.join(video_path, 'meta', video_name+'_meta.json')  # meta...
         with open(meta_path, "r") as f:
             self.meta_dict = json.load(f)
         

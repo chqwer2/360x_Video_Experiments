@@ -98,7 +98,9 @@ class StereoAudioDataset(object):
         video_path = info['path']
         audio_path = os.path.join(video_path, 'audio', 'audio.wav')
         frame_path = os.path.join(video_path, 'frames')
-        meta_path = os.path.join(video_path, 'meta.json')
+        video_name = video_path.split("/")[-1]
+        meta_path = os.path.join(video_path, 'meta', video_name + '_meta.json')  # meta...
+
         with open(meta_path, "r") as f:
             meta_dict = json.load(f)
         
