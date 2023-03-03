@@ -1,3 +1,10 @@
+
+# Stereo to Mono
+
+' cd VideoHandler/Binaural_to_Mono'
+' python Mp4toMonoTracks.py  '
+
+
 # Video Classification
 
 The repository builds a **quick and simple** code for video classification (or action recognition) using [UCF101](http://crcv.ucf.edu/data/UCF101.php) with PyTorch. A video is viewed as a 3D image or several continuous 2D images (Fig.1). Below are two simple neural nets models:
