@@ -96,12 +96,17 @@ class StereoAudioDataset(object):
         # import pdb; pdb.set_trace()
         info = self.list_sample[index]
         video_path = info['path']
-        audio_path = os.path.join(video_path, 'audio', 'audio.wav')
-        frame_path = os.path.join(video_path, 'frames')
-        video_name = video_path.split("/")[-1]
-        meta_path = os.path.join(video_path, 'meta', video_name + '_meta.json')  # meta...
 
-        with open(meta_path, "r") as f:
+        # video_path = list_sample
+        video_name = video_path.split("/")[-1]
+        video_path_noname = video_path.rstrip(video_name).rstrip("/")
+
+        audio_path = os.path.join(video_path_noname, 'audio', 'audio.wav')
+        frame_path = os.path.join(video_path_noname, 'frames')
+
+        meta_path = os.path.join(video_path_noname, 'meta', video_name + '_meta.json')  # meta...
+
+    with open(meta_path, "r") as f:
             meta_dict = json.load(f)
         
         audio_sample_rate = meta_dict['audio_sample_rate']

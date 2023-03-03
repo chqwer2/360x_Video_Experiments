@@ -55,10 +55,13 @@ class SingleVideoDataset(StereoAudioDataset):
             pr.data_weight = self.data_weight
 
         video_path = list_sample
-        audio_path = os.path.join(video_path, 'audio', 'audio.wav')
-        frame_path = os.path.join(video_path, 'frames')
         video_name = video_path.split("/")[-1]
-        meta_path = os.path.join(video_path, 'meta', video_name+'_meta.json')  # meta...
+        video_path_noname = video_path.rstrip(video_name).rstrip("/")
+
+        audio_path = os.path.join(video_path_noname, 'audio', 'audio.wav')
+        frame_path = os.path.join(video_path_noname, 'frames')
+
+        meta_path = os.path.join(video_path_noname, 'meta', video_name+'_meta.json')  # meta...
         with open(meta_path, "r") as f:
             self.meta_dict = json.load(f)
         
