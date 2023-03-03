@@ -32,7 +32,7 @@ def write_csv(data_list, filepath):
         writer.writeheader()
 
         for info in data_list:
-            print("info: ", info)
+            # print("info: ", info)
             writer.writerow(info)
 
             print('{} items saved to {}.'.format(len(data_list), filepath))
@@ -52,6 +52,7 @@ def exam(args):
         meta_path = os.path.join(item, 'meta.json')
         with open(meta_path, "r") as f:
             meta_dict = json.load(f)
+
         sample_rate_list.append(meta_dict['audio_sample_rate'])
         # import pdb; pdb.set_trace()
         audio_path = os.path.join(item, 'audio', 'audio.wav')
@@ -139,6 +140,7 @@ def create_list_for_video(args, name, video_list):
                     'start_time': i
                 }
                 sample_list.append(sample)
+
     if not args.unshuffle:
         random.shuffle(sample_list)
     return sample_list

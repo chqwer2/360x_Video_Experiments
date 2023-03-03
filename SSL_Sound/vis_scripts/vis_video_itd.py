@@ -191,6 +191,10 @@ def test(args, device):
 
         csv_file = csv.DictReader(open(pr.list_vis, 'r'), delimiter=',')
         for row in csv_file:
+            if 'mp4' not in row:
+                continue
+            print("row:", rpw)
+
             if not row in samples:
                 samples.append(row)
 
