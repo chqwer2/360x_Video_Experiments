@@ -101,7 +101,7 @@ def main():
         os.makedirs(audio_path, exist_ok=True)
 
         if not os.path.exists(meta_path):
-            print("Get Frames...")
+            print("Get Frames...")  # About 3mins for a 5mins 360 video
             frame_info = get_frame(video, frame_path, args.frame_rate)
             # audio
             print("Get Audios...")
@@ -111,6 +111,7 @@ def main():
                 tqdm.write(f'{processed_path} is broken')
                 shutil.rmtree(processed_path)
                 continue
+
             # meta data
             get_meta(video, meta_path, frame_info, audio_info)
 

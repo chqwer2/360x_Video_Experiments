@@ -1,5 +1,6 @@
 import os
 import sys
+
 sys.path.append(os.path.dirname(sys.path[0]))
 
 import argparse
@@ -18,6 +19,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
 import matplotlib as mpl
+
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -37,14 +39,13 @@ from vis_functs import *
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-
 def inference(args, pr, net, criterion, data_set, data_loader, device='cuda', video_idx=None):
     # import pdb; pdb.set_trace()
     net.eval()
     img_path_list = []
     crw_itds = []
     baseline_itds = []
-    
+
     with torch.no_grad():
         for step, batch in tqdm(enumerate(data_loader), total=len(data_loader), desc="Inference"):
             # import pdb; pdb.set_trace()
@@ -63,7 +64,8 @@ def inference(args, pr, net, criterion, data_set, data_loader, device='cuda', vi
                 if args.no_baseline:
                     baseline_itd = 0
                 else:
-                    baseline_itd = gcc_phat(args, pr, curr_audio, fs=audio_rate[i].item(), max_tau=pr.max_delay, interp=1)
+                    baseline_itd = gcc_phat(args, pr, curr_audio, fs=audio_rate[i].item(), max_tau=pr.max_delay,
+                                            interp=1)
                 baseline_itds.append(baseline_itd)
 
     img_path_list = np.array(img_path_list)
@@ -89,7 +91,7 @@ def visualization(args, pr, data_set, data_loader, img_path_list, crw_itds, base
     audio = audio.transpose(0, 1).data.cpu().numpy()
     sf.write(audio_name, audio, audio_rate)
 
-    # frame part 
+    # frame part
     frame_rate = data_set.meta_dict['frame_rate']
     for i in range(img_path_list.shape[0]):
         frame_name = os.path.join(frame_folder, f'frame-{str(i).zfill(3)}.jpg')
@@ -98,37 +100,36 @@ def visualization(args, pr, data_set, data_loader, img_path_list, crw_itds, base
     # Generate videos
     video_name = os.path.join(video_folder, f'video-{str(video_idx).zfill(3)}.mp4')
 
-    os.system(f"ffmpeg -v quiet -y -framerate {frame_rate} -i \"{frame_folder}\"/frame-%03d.jpg -i {audio_name} -vf \"crop=trunc(iw/2)*2:trunc(ih/2)*2\" -vcodec h264 -strict -2 -acodec aac -shortest {video_name}")
+    os.system(
+        f"ffmpeg -v quiet -y -framerate {frame_rate} -i \"{frame_folder}\"/frame-%03d.jpg -i {audio_name} -vf \"crop=trunc(iw/2)*2:trunc(ih/2)*2\" -vcodec h264 -strict -2 -acodec aac -shortest {video_name}")
     os.system("rm -rf {}".format(audio_folder))
     os.system("rm -rf {}".format(os.path.join(save_path, 'frames')))
-
-
 
 
 def frame_vis(args, pr, img_path_list, crw_itds, baseline_itds, frame_rate, i, frame_name):
     # import pdb; pdb.set_trace()
     sns.set_style('white')
     img_path = img_path_list[i]
-    crw_itd = - crw_itds[: i+1]
-    baseline_itd =  - baseline_itds[: i+1]
+    crw_itd = - crw_itds[: i + 1]
+    baseline_itd = - baseline_itds[: i + 1]
 
-    fig, (ax0, ax1) = plt.subplots(nrows=2, ncols=1, dpi=150) #, figsize=(12, 7)
+    fig, (ax0, ax1) = plt.subplots(nrows=2, ncols=1, dpi=150)  # , figsize=(12, 7)
     # create image
     img = imageio.imread(img_path)
     ax0.imshow(img)
     ax0.axis('off')
 
     # create plot
-    bins = np.arange(i+1) / frame_rate
+    bins = np.arange(i + 1) / frame_rate
     if args.no_baseline:
         res = [crw_itd]
     else:
         res = [crw_itd, baseline_itd]
     names = ['Ours', 'GCC-PHAT']
-    markers=['o', '*']
+    markers = ['o', '*']
     for idx in range(len(res)):
         ax1.plot(bins, res[idx], label=names[idx], marker=markers[idx], linewidth=1.5, markersize=2)
-    
+
     full_bins = np.arange(img_path_list.shape[0]) / frame_rate
     ax1.plot(full_bins, [0] * img_path_list.shape[0], linewidth=1, markersize=0, linestyle='dashed', color='grey')
 
@@ -153,7 +154,6 @@ def frame_vis(args, pr, img_path_list, crw_itds, baseline_itds, frame_rate, i, f
     plt.close()
 
 
-
 def test(args, device):
     # save dir
     gpus = torch.cuda.device_count()
@@ -164,13 +164,13 @@ def test(args, device):
     pr = fn()
     pr.dataloader = 'SingleVideoDataset'
     update_param(args, pr)
-    
+
     # ----- make dirs for results ----- #
     sys.stdout = utils.LoggerOutput(os.path.join('results', args.exp, 'log.txt'))
     os.makedirs('./results/' + args.exp, exist_ok=True)
-    
+
     # ------------------------------------- #
-    tqdm.write('{}'.format(args)) 
+    tqdm.write('{}'.format(args))
     tqdm.write('{}'.format(pr))
     # ------------------------------------ #
 
@@ -180,7 +180,7 @@ def test(args, device):
 
     # -------- Loading checkpoints weights ------------- #
     if args.resume:
-        resume = args.resume   # './checkpoints/' + 
+        resume = args.resume  # './checkpoints/' +
         net, _ = torch_utils.load_model(resume, net, device=device, strict=False)
 
     # ------------------- #
@@ -188,21 +188,20 @@ def test(args, device):
 
     if isinstance(pr.list_vis, str):
         samples = []
-        list_vis = "/bask/projects/j/jiaoj-3d-vision/360XProject/Data/Meta/vis.csv"
-        # csv_file = csv.DictReader(open(pr.list_vis, 'r'), delimiter=',')
-        csv_file = csv.DictReader(open(list_vis, 'r'), delimiter=',')
+
+        csv_file = csv.DictReader(open(pr.list_vis, 'r'), delimiter=',')
         for row in csv_file:
             if not row in samples:
                 samples.append(row)
 
     if args.max_sample > 0:
         samples = samples[: args.max_sample]
-    
+
     #  --------- Testing ------------ #
     for i in tqdm(range(len(samples)), desc="Generating Video"):
         pr.list_test = samples[i]['path']
         print("samples[i]['path']:", samples[i]['path'])
-        
+
         # ----- Dataset and Dataloader ----- #
         test_dataset, test_loader = torch_utils.get_dataloader(args, pr, split='test', shuffle=False, drop_last=False)
         # --------------------------------- #
