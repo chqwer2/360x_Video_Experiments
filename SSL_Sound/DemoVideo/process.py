@@ -61,7 +61,7 @@ def get_meta(clip, json_path, frame_info, audio_info):
 
 def main():
     args = parser.parse_args()
-    test_number = 10
+    # test_number = 4
 
     # Video Input
     # home_address = "/bask/projects/j/jiaoj-3d-vision/360XProject/Data/*/*/*"
@@ -74,7 +74,7 @@ def main():
 
     video_list = glob.glob(video_root)
     video_list.sort()
-    video_list = video_list[:test_number]
+    # video_list = video_list[:test_number]
 
     print("input video_list:", video_list)
     #  = video_root
@@ -120,7 +120,7 @@ def main():
             continue
 
         # meta data
-        get_meta(video, os.path.join(meta_path, "video_name"+"_meta.json"),
+        get_meta(video, os.path.join(meta_path, video_name+"_meta.json"),
                  frame_info, audio_info)
 
         tqdm.write(f'{video_name} is Finished!')
