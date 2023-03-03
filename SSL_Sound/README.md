@@ -111,8 +111,8 @@ We provide codes for visualizing the ITD prediction of videos over time in `vis_
 - For preprocessing the video, simply run:
   ```bash
   cd Dataset/DemoVideo
-  chmod +x process.sh
-  ./process.sh 'YourVideo'
+  chmod +x 1process.sh
+  ./1process.sh 'YourVideo'
   ```
 - To inference with video results, go back to the parent folder path and simply run
   ```bash
