@@ -109,10 +109,10 @@ def main():
             frame_info = get_frame(video, frame_path, args.frame_rate)
 
         # audio
-        if not os.path.exists(audio_path):
-            print("Get Audios...")
-            os.makedirs(audio_path, exist_ok=True)
-            audio_info = get_audio(video, audio_path)
+        # if not os.path.exists(audio_path):
+        print("Get Audios...")
+        os.makedirs(audio_path, exist_ok=True)
+        audio_info = get_audio(video, audio_path)
 
         if audio_info is None:
             tqdm.write(f'{processed_path} is broken')
