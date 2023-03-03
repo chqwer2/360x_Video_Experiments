@@ -32,7 +32,7 @@ def write_csv(data_list, filepath):
         writer.writeheader()
 
         for info in data_list:
-            print("info)
+            print("info: ", info)
             writer.writerow(info)
 
             print('{} items saved to {}.'.format(len(data_list), filepath))
