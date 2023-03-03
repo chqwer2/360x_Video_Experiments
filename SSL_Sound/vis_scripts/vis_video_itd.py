@@ -191,6 +191,7 @@ def test(args, device):
 
         csv_file = csv.DictReader(open(pr.list_vis, 'r'), delimiter=',')
         for row in csv_file:
+            print("previous row:", row)
             if 'mp4' not in row:
                 continue
             print("row:", row)
