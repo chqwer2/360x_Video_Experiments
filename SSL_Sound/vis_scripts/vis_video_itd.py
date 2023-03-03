@@ -193,7 +193,7 @@ def test(args, device):
         for row in csv_file:
             if 'mp4' not in row:
                 continue
-            print("row:", rpw)
+            print("row:", row)
 
             if not row in samples:
                 samples.append(row)
