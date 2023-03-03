@@ -106,7 +106,7 @@ class StereoAudioDataset(object):
 
         meta_path = os.path.join(video_path_noname, 'meta', video_name + '_meta.json')  # meta...
 
-    with open(meta_path, "r") as f:
+        with open(meta_path, "r") as f:
             meta_dict = json.load(f)
         
         audio_sample_rate = meta_dict['audio_sample_rate']
