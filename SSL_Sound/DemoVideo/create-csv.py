@@ -93,7 +93,9 @@ def create_list_for_video(args, name, video_list):
         path = video  # os.path.join('./data/DemoVideo', video)
 
         video_name = path.split('/')[-1]
-        meta_path = os.path.join(video.rstrip(video_name).rstrip("/"),
+        video = video.rstrip(video_name).rstrip("/")
+
+        meta_path = os.path.join(video,
                                  "meta", video_name+'_meta.json')
 
         try:
@@ -106,8 +108,10 @@ def create_list_for_video(args, name, video_list):
         frame_num = meta_dict['frame_num']
         frame_rate = meta_dict['frame_rate']
         # import pdb; pdb.set_trace()
+
         audio_path = os.path.join(video, 'audio', 'audio.wav')
         audio, audio_rate = sf.read(audio_path, dtype='int16')
+
         cond_2 = not meta_dict['ifstereo']
         cond_3 = np.abs(audio.shape[0] / audio_rate - meta_dict['frame_num'] / meta_dict['frame_rate']) > 0.1
 
